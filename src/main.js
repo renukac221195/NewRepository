@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import Vuetify from 'vuetify'
+import router from './router'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import "vue-material-design-icons/styles.css"
+import store from './stores/store'
  
 Vue.use(Vuetify)
 
@@ -14,5 +17,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  router,
+  store
 })

@@ -1,0 +1,28 @@
+{
+    "user": [
+        {
+            "name": "Renuka",
+            "lastName": "Chanderiya",
+            "dp": "static/images/renuka.jpg",
+            "userId": "renuka",
+            "password": "12345",
+			"id": 1
+        },
+        {
+            "name": "Shreya",
+            "lastName": "Jain",
+            "dp": "static/images/shreya.jpg",
+            "userId": "shreya.jain",
+            "password": "12345",
+			"id": 2
+        },
+        {
+            "name": "Gayatri",
+            "lastName": "Singh",
+            "dp": "static/images/gayatri.jpg",
+            "userId": "gayatri.singh",
+            "password": "12345",
+			"id": 3
+        }
+    ]
+}

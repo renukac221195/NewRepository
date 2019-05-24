@@ -1,7 +1,7 @@
 <template>
-  <v-layout class="container" align-center justify-center>
+  <v-layout class="login" align-center justify-center>
     <v-flex xs12 sm8 md4>
-      <v-card dark color="transparent elevation-12" class="mx-auto">
+      <v-card color="transparent elevation-12" class="mx-auto">
         <v-spacer></v-spacer>
         <v-card-title class="title" align-center justify-center>LOGIN</v-card-title>
         <v-card-text>
@@ -38,8 +38,7 @@
           <v-layout align-center justify-center>
             <v-flex xs-6 offset-xs4>
               <v-card-actions>
-                <v-btn id="btn" class="black--text" color="green" @click="loginUser">Login</v-btn>
-                <!-- <v-btn  class="red--text" color="white" @click="onCancel">Cancel</v-btn> -->
+                <v-btn id="btn" class="white--text" color="green" @click="loginUser">Login</v-btn>
               </v-card-actions>
             </v-flex>
           </v-layout>
@@ -51,6 +50,19 @@
 
 <script>
 export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      user: [],
+      checkbox: false
+    };
+  },
+  computed: {
+    getLoginUser() {
+      return this.$store.getters.getLoginUser;
+    }
+  },
   methods: {
     usernameRules() {
       return [v => !!v || "Username is required"];
@@ -59,15 +71,15 @@ export default {
       return [v => !!v || "Password is required"];
     },
     loginUser() {
-      this.userLogin.find(element => {
+      this.getLoginUser.find(element => {
         if (
           element.userId === this.username &&
           element.password === this.password
         ) {
           localStorage.setItem("username", element.userId);
-        //   this.$store.dispatch("setCurrentUser", element.userId).then(() => {
-            // this.$router.push("/Feeds");
-        //   });
+          this.$store.dispatch("setCurrentUser", element.userId).then(() => {
+            this.$router.push("/Home");
+          });
         }
       });
     }
@@ -75,21 +87,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .title {
   font-weight: bold;
   margin-left: 225px;
   font-size: 60px;
   color: black;
 }
-.container {
-  margin-top: 200px;
+.login {
+  margin-top: 100px;
 }
 #btn {
-    border-radius: 20px;
-    padding: 10px 60px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
+  border-radius: 20px;
+  padding: 8px 60px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>
