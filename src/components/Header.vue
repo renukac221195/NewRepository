@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer clipped fixed app v-model="drawer">
+    <v-navigation-drawer temporary app v-model="drawer">
       <v-list dense>
         <template v-for="item in getDrawerItems">
           <v-list-tile :key="item.text" @click="goToPage(item)">
@@ -23,9 +23,14 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-avatar class="mt-1" size="42px">
-        <img :src="currentUserInfo.dp" :alt="currentUserInfo.name">
+        <img
+          :src="(currentUserInfo) ? currentUserInfo.dp : ''"
+          :alt="(currentUserInfo) ? currentUserInfo.name : ''"
+        >
       </v-avatar>
-      <v-toolbar-title class="mt-1 mr-2">{{currentUserInfo.name}} {{currentUserInfo.lastName}}</v-toolbar-title>
+      <v-toolbar-title
+        class="mt-1 mr-2"
+      >{{(currentUserInfo) ? currentUserInfo.name : ''}} {{(currentUserInfo) ? currentUserInfo.lastName : ''}}</v-toolbar-title>
     </v-toolbar>
   </div>
 </template>
@@ -65,10 +70,10 @@ export default {
       this.$router.push("/");
     },
     goToPage(item) {
-      if (item.text == "Home") this.$router.push("/Home");
-      else if (item.text == "Duplicates") this.$router.push("/Duplicates");
-      else if (item.text == "Logout") this.$router.push("/");
-      else this.$router.push("/Home");
+      if(item.text == 'Logout')
+        this.$router.push("/");
+      else
+        this.$router.push("/" + item.text);
     }
   }
 };

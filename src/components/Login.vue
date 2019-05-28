@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md4>
       <v-card color="transparent elevation-12" class="mx-auto">
         <v-spacer></v-spacer>
-        <v-card-title class="title" align-center justify-center>LOGIN</v-card-title>
+        <v-card-title class="titling" align-center justify-center>LOGIN</v-card-title>
         <v-card-text>
           <v-layout>
             <v-flex xs-12>
@@ -28,11 +28,6 @@
                 type="password"
                 required
               ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex>
-              <v-checkbox v-model="checkbox" label="Remember me"></v-checkbox>
             </v-flex>
           </v-layout>
           <v-layout align-center justify-center>
@@ -88,20 +83,21 @@ export default {
 </script>
 
 <style>
-.title {
+.titling {
+  font-family: cursive;
   font-weight: bold;
-  margin-left: 225px;
-  font-size: 60px;
+  text-align: center;
+  margin-left: 202px;
+  font-size: 25px;
   color: black;
 }
 .login {
   margin-top: 100px;
 }
 #btn {
+  font-family:'Times New Roman', Times, serif;
   border-radius: 20px;
-  padding: 8px 60px;
-  text-align: center;
+  padding: 8px 50px;
   font-size: 16px;
-  font-weight: bold;
 }
 </style>

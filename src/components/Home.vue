@@ -1,10 +1,10 @@
 <template>
-  <div grid-list-xl text-xs-center style="padding=50px">
+  <div grid-list-xl text-xs-center class="outerTable">
     <v-layout row wrap>
       <v-layout justify-center>
-        <v-flex xs6>
+        <v-flex xs8>
           <v-card>
-            <v-card-title class="cyan--text" style="font-size:25px">
+            <v-card-title class="tableTitle">
               <strong>Table</strong>
               <v-spacer></v-spacer>
               <v-text-field
@@ -15,11 +15,15 @@
                 hide-details
               ></v-text-field>
               <v-card-actions>
-                <v-btn color="green darken-1" @click="addMultipleSelects">Select</v-btn>
+                <v-btn class="btnSelect" @click="addMultipleSelects">Select</v-btn>
               </v-card-actions>
             </v-card-title>
             <v-divider></v-divider>
+            <div v-if="loading" class="text-xs-center">
+              <v-progress-circular indeterminate color="cyan"></v-progress-circular>
+            </div>
             <v-data-table
+              v-if="!loading"
               v-model="selected"
               :headers="addHeadersToTable"
               :items="addItemsToTable"
@@ -27,7 +31,6 @@
               select-all
               item-key="id"
               class="elevation-1"
-              hide-actions
             >
               <template v-slot:headers="props">
                 <tr>
@@ -49,7 +52,7 @@
                 </tr>
               </template>
               <template v-slot:items="props">
-                <tr @click="showItem(props.item)">
+                <tr @dblclick="showItem(props.item)">
                   <td>
                     <v-checkbox
                       :input-value="props.selected"
@@ -59,7 +62,6 @@
                     ></v-checkbox>
                   </td>
                   <td>{{ props.item.id }}</td>
-
                   <td>
                     <v-select
                       :items="props.item.type"
@@ -84,33 +86,28 @@
         </v-flex>
       </v-layout>
     </v-layout>
-
-    <v-dialog v-model="dialog" persistent max-width="800px">
-      <v-card>
-        <v-btn icon @click.native="dialog = false" color="red" flat>
+    <v-dialog v-model="dialog" persistent max-width="700px">
+      <v-card class="pa-2">
+        <v-btn icon @click.native="dialog = false" class="dialogBtn" flat>
           <v-icon>close</v-icon>
         </v-btn>
-        <v-container fluid style="min-height: 0; max-width: 800px" grid-list-lg>
-          <v-layout column xs12>
-            <v-card>
-              <v-card-title primary-title>
-                <div>
-                  <span>
-                    <strong class="cyan--text" style="font-size:22px">{{ newItem.type }}</strong>
-                  </span>
-                </div>
-              </v-card-title>
-              <v-card-media :src="newItem.image" :alt="newItem.image" height="350px"></v-card-media>
+        <v-card>
+          <v-card-title primary-title class="cardTitle">
+            <div>
+              <span>
+                <strong class="cardType">{{ newItem.type }}</strong>
+              </span>
+            </div>
+          </v-card-title>
+          <v-card-media :src="newItem.image" :alt="newItem.image" height="350px"></v-card-media>
 
-              <strong>
-                <v-card-title class="cyan--text" style="font-size:15px">{{newItem.title}}</v-card-title>
-              </strong>
-              <v-card-actions>
-                <p>{{ newItem.description }}</p>
-              </v-card-actions>
-            </v-card>
-          </v-layout>
-        </v-container>
+          <strong>
+            <v-card-title class="cardTitle">{{newItem.title}}</v-card-title>
+          </strong>
+          <v-card-actions>
+            <p>{{ newItem.description }}</p>
+          </v-card-actions>
+        </v-card>
       </v-card>
     </v-dialog>
   </div>
@@ -125,7 +122,8 @@ export default {
       search: "",
       dialog: false,
       selected: [],
-      newItem: []
+      newItem: [],
+      loading: false
     };
   },
   computed: {
@@ -140,13 +138,18 @@ export default {
     }
   },
   created() {
-    this.$store
-      .dispatch("fetchTableItems", "/static/TableList.json")
-      .then(response => {
-        this.flag = true;
-        this.items = response.data.tableItems;
-        this.headers = response.data.headers;
-      });
+    this.loading = true;
+    setTimeout(() => {
+      
+      this.$store
+        .dispatch("fetchTableItems", "/static/TableList.json")
+        .then(response => {
+          this.loading = false;
+          this.flag = true;
+          this.items = response.data.tableItems;
+          this.headers = response.data.headers;
+        });
+    }, 1000);
   },
   methods: {
     showItem(item) {
@@ -158,14 +161,36 @@ export default {
       else this.selected = this.addItemsToTable.slice();
     },
     addMultipleSelects() {
-      let uniqueElements = [];
-      uniqueElements.push(this.selected);
-      this.$store.dispatch("addMultipleSelects", uniqueElements);
-      console.log(uniqueElements);
+      this.$store.dispatch("addMultipleSelects", this.selected);
+      console.log(this.selected);
     }
   }
 };
 </script>
 
 <style scoped>
+.outerTable {
+  padding:50px;
+}
+.tableTitle {
+  color: #0097A7;
+  font-size:25px
+}
+.btnSelect {
+  color: black !important;
+  background-color: #66BB6A !important;
+}
+.cardType {
+font-size:22px;
+color: #00BCD4;
+}
+.cardTitle {
+font-size:15px;
+color: #00BCD4;
+}
+.dialogBtn {
+  color: red;
+  float: right;
+  z-index: 1;
+}
 </style>
